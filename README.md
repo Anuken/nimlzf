@@ -1,6 +1,6 @@
 # nimlzf
 
-A simple wrapper for [libzlf](https://software.schmorp.de/pkg/liblzf.html).
+A simple wrapper for the [libzlf](https://software.schmorp.de/pkg/liblzf.html) compression library.
 
 API:
 
