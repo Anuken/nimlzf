@@ -12,8 +12,8 @@ proc currentSourceDir(): string {.compileTime.} =
 proc lzf_compress_c(in_data: pointer, in_len: cuint, out_data: pointer, out_len: cuint): cuint {.cdecl, header: "lzf.h", importc: "lzf_compress".}
 proc lzf_decompress_c(in_data: pointer, in_len: cuint, out_data: pointer, out_len: cuint): cuint {.cdecl, header: "lzf.h", importc: "lzf_decompress".}
 
-proc lzfCompress*(inData: pointer, in_len: int, outData: pointer, outLen: int): int =
-  lzf_compress_c(inData, in_len.cuint, outData, outLen.cuint).int
+proc lzfCompress*(inData: pointer, inLen: int, outData: pointer, outLen: int): int =
+  lzf_compress_c(inData, inLen.cuint, outData, outLen.cuint).int
 
 proc lzfDecompress*(inData: pointer, inLen: int, outData: pointer, outLen: int): int =
   lzf_decompress_c(inData, inLen.cuint, outData, outLen.cuint).int
