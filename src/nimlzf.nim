@@ -25,14 +25,14 @@ proc lzfDecompress*(inData: pointer, inLen: int, outData: pointer, outLen: int):
   result = lzf_decompress_c(inData, inLen.cuint, outData, outLen.cuint).int
   if result == 0: raise IOError.newException("Failed to decompress LZF data: " & $strerror(errno) & " (error code " & $errno & ")")
 
-proc lzfCompress*(data: string): string =
+proc lzfCompress*[T: byte | char](data: openArray[T]): string =
   result = newString(data.len) #would like to use newStringUninit, but that requires a newer nim version
   let length = lzfCompress(addr data[0], data.len, addr result[0], result.len)
   result.setLen(length)
 
-proc lzfDecompress*(data: string, dataLen: int): string =
-  result = newString(dataLen)
-  discard lzfDecompress(addr data[0], data.len, addr result[0], dataLen)
+proc lzfDecompress*[T: byte | char](data: openArray[T], decompressedLen: int): string =
+  result = newString(decompressedLen)
+  discard lzfDecompress(addr data[0], data.len, addr result[0], decompressedLen)
 
 when isMainModule:
   let data = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"
@@ -46,3 +46,5 @@ when isMainModule:
   let result = lzfDecompress(compressed, data.len)
 
   doAssert result == data
+
+  doAssert lzfDecompress(lzfCompress("ffffffffff"), 10) == "ffffffffff"
